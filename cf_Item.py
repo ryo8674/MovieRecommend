@@ -41,6 +41,9 @@ header = next(reader)
 #対象ユーザ情報
 # user_x = [2, 3, 4, 5, 6, 7, 8, 120, 121, 130, 135]
 user_x = header[1:]
+while user_x.count("")>0:
+    user_x.remove("")
+user_x = map(int,user_x)
 
 
 user_dict={}
