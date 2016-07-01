@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+## 環境:Python 2.7.9
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 from collections import defaultdict
 from math import sqrt
 import csv
 
+
+#----------------類似度--------------------
 #jaccard指数
 def jaccard(e1, e2):
     """
@@ -27,13 +31,14 @@ def cossim(e1,e2):
     set_e2 = set(e2)
     return float(len(set_e1 & set_e2)) / (sqrt(float(len(set_e1)))*sqrt(float(len(set_e2))))
 
+#推薦対象ユーザ情報
 #ReadFile
 filename = 'in_data.csv'
 fp = open(filename,"rU")
 reader = csv.reader(fp)
 header = next(reader)
 
-#ユーザ情報
+#対象ユーザ情報
 # user_x = [2, 3, 4, 5, 6, 7, 8, 120, 121, 130, 135]
 user_x = header[1:]
 
@@ -58,7 +63,7 @@ for row in reader:
     for k in range(0,len(user_list)):
         user_dict.setdefault(row[0],[]).append(user_list[k])
 
-#--------------類似度最大値計算-------------
+#--------------類似度最大価計算-------------
 ##・類似度と映画Noを取得
 ##・同値の場合の処理 => 映画Noを複数格納
 max =[]
