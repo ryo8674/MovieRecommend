@@ -9,7 +9,7 @@ header = next(reader)
 target = header[1:]
 print target
 
-for row in reader:
-   print (row[1:])
+# for row in reader:
+#    print (row[1:])
 
 f.close()
