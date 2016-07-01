@@ -5,7 +5,7 @@ f = open('in_data.csv', 'rU')
 reader = csv.reader(f)
 header = next(reader)
 
-target =[]
+#target =[]
 target = header[1:]
 print target
 

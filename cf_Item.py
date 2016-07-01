@@ -27,14 +27,18 @@ def cossim(e1,e2):
     set_e2 = set(e2)
     return float(len(set_e1 & set_e2)) / (sqrt(float(len(set_e1)))*sqrt(float(len(set_e2))))
 
-#ユーザ情報
-user_x = [2, 3, 4, 5, 6, 7, 8, 120, 121, 130, 135]
-
-
 #ReadFile
 filename = 'in_data.csv'
 fp = open(filename,"rU")
 reader = csv.reader(fp)
+header = next(reader)
+
+user_x =[]
+user_x = header[1:]
+#ユーザ情報
+# user_x = [2, 3, 4, 5, 6, 7, 8, 120, 121, 130, 135]
+
+
 
 user_dict={}
 user_list=[]
