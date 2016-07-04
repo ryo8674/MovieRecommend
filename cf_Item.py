@@ -7,6 +7,7 @@ from collections import defaultdict
 from math import sqrt
 import csv
 
+__author__ = 'Ryo Yamada'
 
 #----------------類似度--------------------
 #jaccard指数
@@ -50,7 +51,7 @@ while user_x.count("")>0:
     user_x.remove("")
 user_x = map(int,user_x)
 
-print "対象ユーザ視聴履歴：",user_x
+print "\n対象ユーザ視聴履歴：",user_x,"\n"
 
 user_dict = {}
 user_list = []
@@ -143,9 +144,6 @@ for i in range(0,len(max)):
 
 print "------------------------------------------------------------------------------------------------------------"
 
-#-----------------実装部-------------------
-#--------推薦アイテムリストに重み付----------
-#in_data_Item.csv -> 割合を付与
-#割合の上位5位を取得する
 
 fp.close()
+Userfp.close()
