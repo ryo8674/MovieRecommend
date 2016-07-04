@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-## 環境:Python 2.7.9
+## 環境:Python 2.7.10
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
@@ -38,6 +38,11 @@ fp = open(filename,"rU")
 reader = csv.reader(fp)
 header = next(reader)
 
+#ItemBaseFile
+filenameItem = 'in_data_Item_rate.csv'
+Userfp = open(filenameItem,"rU")
+readerU = csv.reader(Userfp)
+
 #対象ユーザ情報
 # user_x = [2, 3, 4, 5, 6, 7, 8, 120, 121, 130, 135]
 user_x = header[1:]
@@ -45,11 +50,16 @@ while user_x.count("")>0:
     user_x.remove("")
 user_x = map(int,user_x)
 
+print "対象ユーザ視聴履歴：",user_x
 
-user_dict={}
-user_list=[]
-rec_dict={}
-r_list = []
+user_dict = {}
+user_list = []
+rec_dict = {}
+r_list = [] #類似度
+
+Itemrate_list = []
+Itemrate_dict = {}
+headerU = next(readerU)
 
 for row in reader:
     user_list = row[1:]
@@ -65,6 +75,15 @@ for row in reader:
     #listを辞書化
     for k in range(0,len(user_list)):
         user_dict.setdefault(row[0],[]).append(user_list[k])
+
+#ItemBaseFile
+for row in readerU:
+    Itemrate_list = row[1:]
+    while Itemrate_list.count("")>0:
+            Itemrate_list.remove("")
+    Itemrate_list = map(float,Itemrate_list)
+    for k in range(0,len(Itemrate_list)):
+        Itemrate_dict.setdefault(row[0],[]).append(Itemrate_list[k])
 
 #--------------類似度最大価計算-------------
 ##・類似度と映画Noを取得
@@ -83,7 +102,7 @@ for i in range(0,len(r_list)):
 # 類似度の高いユーザとそのユーザの視聴映画
 for i in range(0,len(max)):
     print "------------------------------------------------------------------------------------------------------------"
-    print "RecommendUser :",max[i],"\n"
+    # print "RecommendUser :",max[i],"\n"
     rec_user = user_dict[str(max[i])]
 
     src_set = set(user_x)
@@ -93,9 +112,40 @@ for i in range(0,len(max)):
     #print matched_list
 
     matched_set = set(matched_list)
+
+    #推薦候補リスト
     rec_list = list(tag_set - matched_set)
-    rec_list.sort()
-    print "RecommendItem :",rec_list
+
+    # #推薦候補リストに重みを付与
+    rate_list = []
+    rate_dict = {}
+    #推薦候補順序付けリスト
+    rec_index = []
+    rec_value = []
+    for j in rec_list:
+        rate = 0
+        for i in user_x:
+            rate_list=Itemrate_dict[str(i)]
+            rate += rate_list[j-1]
+        # print rate
+        rate_dict[j] = rate
+
+    #辞書を降順ソート
+    for k, v in sorted(rate_dict.items(), key=lambda x:x[1] ,reverse = True):
+        rec_index.append(k)
+        rec_value.append(v)
+
+    # #昇順ソート
+    # rec_list.sort()
+
+    print "RecommendItem :",rec_index[0:5]
+    # print "RecommendItem :",rec_list
+
 print "------------------------------------------------------------------------------------------------------------"
+
+#-----------------実装部-------------------
+#--------推薦アイテムリストに重み付----------
+#in_data_Item.csv -> 割合を付与
+#割合の上位5位を取得する
 
 fp.close()
