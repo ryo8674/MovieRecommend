@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-## 環境:Python 2.7.10
+## 環境:Python 2.7.10s
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
@@ -45,11 +45,20 @@ Userfp = open(filenameItem,"rU")
 readerU = csv.reader(Userfp)
 
 #対象ユーザ情報
+#推薦対象ユーザをランダムに取得 -> 視聴履歴DBは対象ユーザ以外を取得
+
 # user_x = [2, 3, 4, 5, 6, 7, 8, 120, 121, 130, 135]
 user_x = header[1:]
+#-----------------
+
+#実装部分
+
+#-----------------
+
 while user_x.count("")>0:
     user_x.remove("")
 user_x = map(int,user_x)
+
 
 print "\n対象ユーザ視聴履歴：",user_x,"\n"
 
