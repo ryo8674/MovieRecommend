@@ -34,15 +34,23 @@ def cossim(e1,e2):
 
 #推薦対象ユーザ情報
 #ReadFile
-filename = 'in_data.csv'
+filename = 'data/in_data.csv'
 fp = open(filename,"rU")
 reader = csv.reader(fp)
 header = next(reader)
 
 #ItemBaseFile
-filenameItem = 'in_data_Item_rate.csv'
+filenameItem = 'data/in_data_Item_rate.csv'
 Userfp = open(filenameItem,"rU")
 readerU = csv.reader(Userfp)
+
+#MovieDataBase ->dictionary
+filenameMovie = 'data/MovieDB.csv'
+Moviefp = open(filenameMovie,"rU")
+readerMovie = csv.reader(Moviefp)
+MovieDB_dict={}
+for row in readerMovie:
+    MovieDB_dict[row[0]]=row[1].decode('utf-8')
 
 #対象ユーザ情報
 #推薦対象ユーザをランダムに取得 -> 視聴履歴DBは対象ユーザ以外を取得
@@ -148,7 +156,10 @@ for i in range(0,len(max)):
     # #昇順ソート
     # rec_list.sort()
 
-    print "RecommendItem :",rec_index[0:5]
+    print "RecommendItem :"
+    for i in rec_index[0:5]:
+        print i,MovieDB_dict[str(i)]
+    # print "RecommendItem :",rec_index[0:5]
     # print "RecommendItem :",rec_list
 
 print "------------------------------------------------------------------------------------------------------------"
