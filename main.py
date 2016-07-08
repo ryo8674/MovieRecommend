@@ -100,7 +100,10 @@ for row in readerEval:
 #対象ユーザ情報
 #推薦対象ユーザをランダムに取得 -> 視聴履歴DBは対象ユーザ以外を取得
 
-# user_x = [2, 3, 4, 5, 6, 7, 8, 120, 121, 130, 135]
+#出力ファイル生成
+outfp = open('output.csv', 'ab')
+csvWriter = csv.writer(outfp)
+
 for count in range(1,len(user_dict)+1):
     # 一時的に対象ユーザを格納する辞書
     tmp_dict ={}
@@ -189,13 +192,22 @@ for count in range(1,len(user_dict)+1):
         # #昇順ソート
         # rec_list.sort()
 
+        #出力ファイル書き込み
+
         print "RecommendItem :"
         for w in rec_index[0:5]:
-            # print w,MovieDB_dict[str(w)]
+            outlist = []
+            outlist.append(count)
+            outlist.append(w)
+
+            print w,MovieDB_dict[str(w)]
             tmp_user=[]
             tmp_user = Eval_dict[str(count)]
-            print tmp_user[w-1]
-        # print "RecommendItem :",rec_index[0:5]
+            # print tmp_user[w-1]
+            outlist.append(tmp_user[w-1])
+            csvWriter.writerow(outlist)
+
+        # # print "RecommendItem :",rec_index[0:5]
         # print "RecommendItem :",rec_list
 
     print "------------------------------------------------------------------------------------------------------------"
@@ -205,3 +217,4 @@ fp.close()
 Userfp.close()
 Moviefp.close()
 Evalfp.close()
+outfp.close()
