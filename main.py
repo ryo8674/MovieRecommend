@@ -101,10 +101,10 @@ for row in readerEval:
 #推薦対象ユーザをランダムに取得 -> 視聴履歴DBは対象ユーザ以外を取得
 
 #出力ファイル生成
-outfp = open('output.csv', 'ab')
+outfp = open('output.csv', 'w')
 csvWriter = csv.writer(outfp)
 
-for count in range(1,len(user_dict)+1):
+for usr in range(1,len(user_dict)+1):
     # 一時的に対象ユーザを格納する辞書
     tmp_dict ={}
     tmp_list =[]
@@ -112,11 +112,11 @@ for count in range(1,len(user_dict)+1):
     # count = 1
     tmp_dict = dict(user_dict)
     user_x = [] #対象ユーザ
-    user_x = user_dict[str(count)]
-    # user_dict.pop(str(count))
+    user_x = user_dict[str(usr)]
+    # user_dict.pop(str(usr))
 
     for i in range(1,len(user_dict)):
-        if i == count:
+        if i == usr:
             continue
         if user_dict.has_key(str(i)):
             tmp_list = user_dict[str(i)]
@@ -135,7 +135,7 @@ for count in range(1,len(user_dict)+1):
         user_x.remove("")
     user_x = map(int,user_x)
 
-    print "\n対象ユーザ視聴履歴：",count,"\n"
+    print "\nTargetUser：",usr,"\n"
 
 
 
@@ -153,6 +153,12 @@ for count in range(1,len(user_dict)+1):
     	elif value == r_list[i]:
     		max.append(i+1)
 
+    rate_list = []
+    rate_dict = {}
+    rec_index = []
+    rec_value = []
+    rec_list_bk = []
+    rec_list =[]
     # 類似度の高いユーザとそのユーザの視聴映画
     for i in range(0,len(max)):
         print "------------------------------------------------------------------------------------------------------------"
@@ -168,14 +174,18 @@ for count in range(1,len(user_dict)+1):
         matched_set = set(matched_list)
 
         #推薦候補リスト
-        rec_list = list(tag_set - matched_set)
+        rec_list_bk = list(tag_set - matched_set)
+        for i in rec_list_bk:
+            rec_list.append(i)
+        rec_list = list(set(rec_list))
+        # print rec_list
 
         # #推薦候補リストに重みを付与
-        rate_list = []
-        rate_dict = {}
+        # rate_list = []
+        # rate_dict = {}
         #推薦候補順序付けリスト
-        rec_index = []
-        rec_value = []
+        # rec_index = []
+        # rec_value = []
         for j in rec_list:
             rate = 0
             for k in user_x:
@@ -193,25 +203,26 @@ for count in range(1,len(user_dict)+1):
         # rec_list.sort()
 
         #出力ファイル書き込み
+    print "RecommendItem :"
+        # v = 0
+    for w in rec_index[0:5]:
+        outlist = []
+        outlist.append(usr)
+        outlist.append(w)
+        # outlist.append(rec_value[v])
+        # v += 1
+        print w,MovieDB_dict[str(w)]
+        tmp_user=[]
+        tmp_user = Eval_dict[str(usr)]
+        # print tmp_user[w-1]
+        outlist.append(tmp_user[w-1])
+        csvWriter.writerow(outlist)
 
-        print "RecommendItem :"
-        for w in rec_index[0:5]:
-            outlist = []
-            outlist.append(count)
-            outlist.append(w)
-
-            print w,MovieDB_dict[str(w)]
-            tmp_user=[]
-            tmp_user = Eval_dict[str(count)]
-            # print tmp_user[w-1]
-            outlist.append(tmp_user[w-1])
-            csvWriter.writerow(outlist)
-
-        # # print "RecommendItem :",rec_index[0:5]
-        # print "RecommendItem :",rec_list
+    # # print "RecommendItem :",rec_index[0:5]
+    # print "RecommendItem :",rec_list
 
     print "------------------------------------------------------------------------------------------------------------"
-    user_dict =dict(tmp_dict)
+    # user_dict =dict(tmp_dict)
 
 fp.close()
 Userfp.close()
