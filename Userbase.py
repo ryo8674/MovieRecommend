@@ -48,32 +48,9 @@ for row in reader:
         user_list.remove("")
     user_list = map(int,user_list)
 
-    # #ユーザXとの類似度計算
-    # r = jaccard(user_x, user_list)
-    # # r = cossim(user_x, user_list)
-    # r_list.append(r)
-
     #listを辞書化
     for k in range(0,len(user_list)):
         user_dict.setdefault(row[0],[]).append(user_list[k])
-
-#ItemBaseFile
-filenameItem = 'data/data_817/in_data_Item_rate817.csv'
-Userfp = open(filenameItem,"rU")
-readerU = csv.reader(Userfp)
-
-#ItemBaseFile
-Itemrate_list = []
-Itemrate_dict = {}
-headerU = next(readerU)
-
-for row in readerU:
-    Itemrate_list = row[1:]
-    while Itemrate_list.count("")>0:
-            Itemrate_list.remove("")
-    Itemrate_list = map(float,Itemrate_list)
-    for k in range(0,len(Itemrate_list)):
-        Itemrate_dict.setdefault(row[0],[]).append(Itemrate_list[k])
 
 #MovieDataBase ->dictionary
 filenameMovie = 'data/MovieDB.csv'
@@ -101,7 +78,7 @@ for row in readerEval:
 #推薦対象ユーザをランダムに取得 -> 視聴履歴DBは対象ユーザ以外を取得
 
 #出力ファイル生成
-outfp = open('data/result/output.csv', 'w')
+outfp = open('data/result/outputU.csv', 'w')
 csvWriter = csv.writer(outfp)
 
 for usr in range(1,len(user_dict)+1):
@@ -180,37 +157,17 @@ for usr in range(1,len(user_dict)+1):
         rec_list = list(set(rec_list))
         # print rec_list
 
-        # #推薦候補リストに重みを付与
-        # rate_list = []
-        # rate_dict = {}
-        #推薦候補順序付けリスト
-        # rec_index = []
-        # rec_value = []
-        for j in rec_list:
-            rate = 0
-            for k in user_x:
-                rate_list=Itemrate_dict[str(k)]
-                rate += rate_list[j-1]
-            # print rate
-            rate_dict[j] = rate
-
-        #辞書を降順ソート
-        for k, v in sorted(rate_dict.items(), key=lambda x:x[1] ,reverse = True):
-            rec_index.append(k)
-            rec_value.append(v)
-
         # #昇順ソート
         # rec_list.sort()
 
         #出力ファイル書き込み
     print "RecommendItem :"
         # v = 0
-    for w in rec_index[0:5]:
+    for w in rec_list[0:5]:
         outlist = []
         outlist.append(usr)
         outlist.append(w)
-        # outlist.append(rec_value[v])
-        # v += 1
+
         print w,MovieDB_dict[str(w)]
         tmp_user=[]
         tmp_user = Eval_dict[str(usr)]
@@ -225,7 +182,6 @@ for usr in range(1,len(user_dict)+1):
     # user_dict =dict(tmp_dict)
 
 fp.close()
-Userfp.close()
 Moviefp.close()
 Evalfp.close()
 outfp.close()

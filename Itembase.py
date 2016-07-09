@@ -101,7 +101,7 @@ for row in readerEval:
 #推薦対象ユーザをランダムに取得 -> 視聴履歴DBは対象ユーザ以外を取得
 
 #出力ファイル生成
-outfp = open('data/result/output.csv', 'w')
+outfp = open('data/result/outputI.csv', 'w')
 csvWriter = csv.writer(outfp)
 
 for usr in range(1,len(user_dict)+1):
@@ -115,15 +115,15 @@ for usr in range(1,len(user_dict)+1):
     user_x = user_dict[str(usr)]
     # user_dict.pop(str(usr))
 
-    for i in range(1,len(user_dict)):
-        if i == usr:
-            continue
-        if user_dict.has_key(str(i)):
-            tmp_list = user_dict[str(i)]
-        #ユーザXとの類似度計算
-            r = jaccard(user_x, tmp_list)
-            # r = cossim(user_x, user_list)
-            r_list.append(r)
+    # for i in range(1,len(user_dict)):
+    #     if i == usr:
+    #         continue
+    #     if user_dict.has_key(str(i)):
+    #         tmp_list = user_dict[str(i)]
+    #     #ユーザXとの類似度計算
+    #         r = jaccard(user_x, tmp_list)
+    #         # r = cossim(user_x, user_list)
+    #         r_list.append(r)
 
     #-----------------
 
@@ -142,16 +142,16 @@ for usr in range(1,len(user_dict)+1):
     #--------------類似度最大価計算-------------
     ##・類似度と映画Noを取得
     ##・同値の場合の処理 => 映画Noを複数格納
-    max =[]
-    value = 0
-
-    for i in range(0,len(r_list)):
-    	if value < r_list[i]:
-    		max=[]
-    		max.insert(0,i+1)
-    		value = r_list[i]
-    	elif value == r_list[i]:
-    		max.append(i+1)
+    # max =[]
+    # value = 0
+    #
+    # for i in range(0,len(r_list)):
+    # 	if value < r_list[i]:
+    # 		max=[]
+    # 		max.insert(0,i+1)
+    # 		value = r_list[i]
+    # 	elif value == r_list[i]:
+    # 		max.append(i+1)
 
     rate_list = []
     rate_dict = {}
@@ -159,50 +159,53 @@ for usr in range(1,len(user_dict)+1):
     rec_value = []
     rec_list_bk = []
     rec_list =[]
-    # 類似度の高いユーザとそのユーザの視聴映画
-    for i in range(0,len(max)):
-        print "------------------------------------------------------------------------------------------------------------"
-        # print "RecommendUser :",max[i],"\n"
-        rec_user = user_dict[str(max[i])]
+    print "------------------------------------------------------------------------------------------------------------"
+    # print "RecommendUser :",max[i],"\n"
+    # rec_user = user_dict[str(max[i])]
+    #
+    # src_set = set(user_x)
+    # tag_set = set(rec_user)
+    #
+    # matched_list =list (src_set & tag_set)
+    # #print matched_list
+    #
+    # matched_set = set(matched_list)
 
-        src_set = set(user_x)
-        tag_set = set(rec_user)
+    #推薦候補リスト
+    # rec_list_bk = list(tag_set - matched_set)
+    # for i in rec_list_bk:
+    #     rec_list.append(i)
+    # rec_list = list(set(rec_list))
+    # print rec_list
 
-        matched_list =list (src_set & tag_set)
-        #print matched_list
+    # #推薦候補リストに重みを付与
+    # rate_list = []
+    # rate_dict = {}
+    #推薦候補順序付けリスト
+    # rec_index = []
+    # rec_value = []
+    # print len(MovieDB_dict)
 
-        matched_set = set(matched_list)
+    for j in range(1,len(MovieDB_dict)+1):
+        rate = 0
+        for k in user_x:
+            rate_list=Itemrate_dict[str(k)]
+            rate += rate_list[j-1]
+        # print rate
+        rate_dict[j] = rate
+    # print rate_dict
+    for k in user_x:
+        rate_dict.pop(k)
 
-        #推薦候補リスト
-        rec_list_bk = list(tag_set - matched_set)
-        for i in rec_list_bk:
-            rec_list.append(i)
-        rec_list = list(set(rec_list))
-        # print rec_list
+    #辞書を降順ソート
+    for k, v in sorted(rate_dict.items(), key=lambda x:x[1] ,reverse = True):
+        rec_index.append(k)
+        rec_value.append(v)
 
-        # #推薦候補リストに重みを付与
-        # rate_list = []
-        # rate_dict = {}
-        #推薦候補順序付けリスト
-        # rec_index = []
-        # rec_value = []
-        for j in rec_list:
-            rate = 0
-            for k in user_x:
-                rate_list=Itemrate_dict[str(k)]
-                rate += rate_list[j-1]
-            # print rate
-            rate_dict[j] = rate
+    # #昇順ソート
+    # rec_list.sort()
 
-        #辞書を降順ソート
-        for k, v in sorted(rate_dict.items(), key=lambda x:x[1] ,reverse = True):
-            rec_index.append(k)
-            rec_value.append(v)
-
-        # #昇順ソート
-        # rec_list.sort()
-
-        #出力ファイル書き込み
+    #出力ファイル書き込み
     print "RecommendItem :"
         # v = 0
     for w in rec_index[0:5]:
