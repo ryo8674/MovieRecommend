@@ -102,12 +102,6 @@ for usr in range(1,len(user_dict)+1):
             # r = cossim(user_x, user_list)
             r_list.append(r)
 
-    #-----------------
-
-    #実装部分
-
-    #-----------------
-
     while user_x.count("")>0:
         user_x.remove("")
     user_x = map(int,user_x)
