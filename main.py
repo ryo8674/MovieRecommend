@@ -66,6 +66,11 @@ for row in reader:
     for k in range(0,len(user_list)):
         user_dict.setdefault(row[0],[]).append(user_list[k])
 
+###########################
+# ---------変更点--------- #
+# ItenにMovieのImageを使用 #
+##########################
+
 #ItemBaseFile
 filenameItem = 'data/data_817/in_data_Item_rate817.csv'
 Userfp = open(filenameItem,"rU")
