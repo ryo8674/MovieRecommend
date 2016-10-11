@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
-## 環境:Python 2.7.10
+# python 2.7.10
+
+
+#-------------------------------------------#
+# #Schedule
+# - data analysis
+# - ImageFilter -> ItemBased
+#     -> Image Similarity
+#-------------------------------------------#
+
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
