@@ -77,8 +77,14 @@ for row in readerEval:
     for k in range(0,len(Eval_list)):
         Eval_dict.setdefault(row[0],[]).append(Eval_list[k])
 
-#対象ユーザ情報
-#推薦対象ユーザをランダムに取得 -> 視聴履歴DBは対象ユーザ以外を取得
+#Transrate MovieNo. -> ImageNo.
+filenameImage = 'data/Movie_toImage.csv'
+Imgfp = open(filenameImage,"rU")
+readerImage = csv.reader(Imgfp)
+ImageDB_dict={}
+for row in readerImage:
+    ImageDB_dict[int(row[0])]=int(row[1])
+# print ImageDB_dict
 
 #出力ファイル生成
 outfp = open('data/result/outputU_Img.csv', 'w')
@@ -94,89 +100,96 @@ for usr in range(1,len(user_dict)+1):
     user_x = [] #対象ユーザ
     user_x = user_dict[str(usr)]
     # user_dict.pop(str(usr))
-
-    for i in range(1,len(user_dict)):
-        if i == usr:
-            continue
-        if user_dict.has_key(str(i)):
-            tmp_list = user_dict[str(i)]
-        #ユーザXとの類似度計算
-            r = jaccard(user_x, tmp_list)
-            # r = cossim(user_x, user_list)
-            r_list.append(r)
-
-    while user_x.count("")>0:
-        user_x.remove("")
-    user_x = map(int,user_x)
-
-    print "\nTargetUser：",usr,"\n"
+    Image_list=[]
+    for i in user_x:
+        Image_list.append(ImageDB_dict[i])
+    csvWriter.writerow(Image_list)
 
 
+    # for i in range(1,len(user_dict)):
+        # if i == usr:
+        #     continue
+        # if user_dict.has_key(str(i)):
+        #     tmp_list = user_dict[str(i)]
+        # #ユーザXとの類似度計算
+        #     r = jaccard(user_x, tmp_list)
+        #     # r = cossim(user_x, user_list)
+        #     r_list.append(r)
 
-    #--------------類似度最大価計算-------------
-    ##・類似度と映画Noを取得
-    ##・同値の場合の処理 => 映画Noを複数格納
-    max =[]
-    value = 0
 
-    for i in range(0,len(r_list)):
-    	if value < r_list[i]:
-    		max=[]
-    		max.insert(0,i+1)
-    		value = r_list[i]
-    	elif value == r_list[i]:
-    		max.append(i+1)
+    # while user_x.count("")>0:
+    #     user_x.remove("")
+    # user_x = map(int,user_x)
 
-    rate_list = []
-    rate_dict = {}
-    rec_index = []
-    rec_value = []
-    rec_list_bk = []
-    rec_list =[]
-    # 類似度の高いユーザとそのユーザの視聴映画
-    for i in range(0,len(max)):
-        print "------------------------------------------------------------------------------------------------------------"
-        # print "RecommendUser :",max[i],"\n"
-        rec_user = user_dict[str(max[i])]
 
-        src_set = set(user_x)
-        tag_set = set(rec_user)
-
-        matched_list =list (src_set & tag_set)
-        #print matched_list
-
-        matched_set = set(matched_list)
-
-        #推薦候補リスト
-        rec_list_bk = list(tag_set - matched_set)
-        for i in rec_list_bk:
-            rec_list.append(i)
-        rec_list = list(set(rec_list))
-        # print rec_list
-
-        # #昇順ソート
-        # rec_list.sort()
-
-        #出力ファイル書き込み
-    print "RecommendItem :"
-        # v = 0
-    for w in rec_list[0:5]:
-        outlist = []
-        outlist.append(usr)
-        outlist.append(w)
-
-        print w,MovieDB_dict[str(w)]
-        tmp_user=[]
-        tmp_user = Eval_dict[str(usr)]
-        # print tmp_user[w-1]
-        outlist.append(tmp_user[w-1])
-        csvWriter.writerow(outlist)
-
-    # # print "RecommendItem :",rec_index[0:5]
-    # print "RecommendItem :",rec_list
-
-    print "------------------------------------------------------------------------------------------------------------"
-    # user_dict =dict(tmp_dict)
+    # print "\nTargetUser：",usr,"\n"
+    #
+    #
+    #
+    # #--------------類似度最大価計算-------------
+    # ##・類似度と映画Noを取得
+    # ##・同値の場合の処理 => 映画Noを複数格納
+    # max =[]
+    # value = 0
+    #
+    # for i in range(0,len(r_list)):
+    # 	if value < r_list[i]:
+    # 		max=[]
+    # 		max.insert(0,i+1)
+    # 		value = r_list[i]
+    # 	elif value == r_list[i]:
+    # 		max.append(i+1)
+    #
+    # rate_list = []
+    # rate_dict = {}
+    # rec_index = []
+    # rec_value = []
+    # rec_list_bk = []
+    # rec_list =[]
+    # # 類似度の高いユーザとそのユーザの視聴映画
+    # for i in range(0,len(max)):
+    #     print "------------------------------------------------------------------------------------------------------------"
+    #     # print "RecommendUser :",max[i],"\n"
+    #     rec_user = user_dict[str(max[i])]
+    #
+    #     src_set = set(user_x)
+    #     tag_set = set(rec_user)
+    #
+    #     matched_list =list (src_set & tag_set)
+    #     #print matched_list
+    #
+    #     matched_set = set(matched_list)
+    #
+    #     #推薦候補リスト
+    #     rec_list_bk = list(tag_set - matched_set)
+    #     for i in rec_list_bk:
+    #         rec_list.append(i)
+    #     rec_list = list(set(rec_list))
+    #     # print rec_list
+    #
+    #     # #昇順ソート
+    #     # rec_list.sort()
+    #
+    #     #出力ファイル書き込み
+    # print "RecommendItem :"
+    #     # v = 0
+    # for w in rec_list[0:5]:
+    #     outlist = []
+    #     outlist.append(usr)
+    #     outlist.append(w)
+    #
+    #     print w,MovieDB_dict[str(w)]
+    #     tmp_user=[]
+    #     tmp_user = Eval_dict[str(usr)]
+    #     # print tmp_user[w-1]
+    #     outlist.append(tmp_user[w-1])
+    #     csvWriter.writerow(outlist)
+    #
+    # # # print "RecommendItem :",rec_index[0:5]
+    # # print "RecommendItem :",rec_list
+    #
+    # print "------------------------------------------------------------------------------------------------------------"
+    # # user_dict =dict(tmp_dict)
 
 fp.close()
 Moviefp.close()
