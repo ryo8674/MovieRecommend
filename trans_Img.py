@@ -87,7 +87,7 @@ for row in readerImage:
 # print ImageDB_dict
 
 #出力ファイル生成
-outfp = open('data/result/outputU_Img.csv', 'w')
+outfp = open('data/output_Img.csv', 'w')
 csvWriter = csv.writer(outfp)
 
 for usr in range(1,len(user_dict)+1):
@@ -103,7 +103,10 @@ for usr in range(1,len(user_dict)+1):
     Image_list=[]
     for i in user_x:
         Image_list.append(ImageDB_dict[i])
-    csvWriter.writerow(Image_list)
+    out_list=[]
+    out_list = list(set(Image_list))
+    out_list.sort()
+    csvWriter.writerow(out_list)
 
 
     # for i in range(1,len(user_dict)):
