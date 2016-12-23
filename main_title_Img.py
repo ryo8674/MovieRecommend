@@ -93,8 +93,10 @@ filenameMovie = 'data/MovieDB.csv'
 Moviefp = open(filenameMovie,"rU")
 readerMovie = csv.reader(Moviefp)
 MovieDB_dict={}
+imageWeight = {}
 for row in readerMovie:
     MovieDB_dict[row[0]]=row[1].decode('utf-8')
+    imageWeight[row[0]] = row[2]
 
 #transrate Movie to Image
 filenametoImage ='data/Movie_toImage.csv'
@@ -128,7 +130,8 @@ for row in readerEval:
 #推薦対象ユーザをランダムに取得 -> 視聴履歴DBは対象ユーザ以外を取得
 
 #出力ファイル生成
-outfp = open('data/result/output_title_Img.csv', 'w')
+# outfp = open('data/result/output_title_Img.csv', 'w')
+outfp = open('data/result/output_title_Img2.csv', 'w')
 csvWriter = csv.writer(outfp)
 
 for usr in range(1,len(user_dict)+1):
@@ -231,7 +234,7 @@ for usr in range(1,len(user_dict)+1):
                 rate += rate_list[j-1]
             for k in userImg_x:
                 rate_list_Img = usrImg_dict[str(k)]
-                rate_Img += rate_list_Img[tmp_j[0]-1]
+                rate_Img += rate_list_Img[tmp_j[0]-1] * imageWeight[str(k)]
             rate_dict[j] = rate + rate_Img
 
         #辞書を降順ソート
