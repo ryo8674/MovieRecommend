@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from collections import defaultdict
 from math import sqrt
+from time import sleep
 import csv
 
 __author__ = 'Ryo Yamada'
@@ -92,11 +93,13 @@ for row in readerU:
 filenameMovie = 'data/MovieDB.csv'
 Moviefp = open(filenameMovie,"rU")
 readerMovie = csv.reader(Moviefp)
-MovieDB_dict={}
-imageWeight = {}
+MovieDB_dict = {}
+imageWeight = []
 for row in readerMovie:
     MovieDB_dict[row[0]]=row[1].decode('utf-8')
-    imageWeight[row[0]] = row[2]
+    imageWeight.append(row[2])
+imageWeight = map(float,imageWeight)
+
 
 #transrate Movie to Image
 filenametoImage ='data/Movie_toImage.csv'
@@ -181,9 +184,15 @@ for usr in range(1,len(user_dict)+1):
     rate_list = []
     rate_dict = {}
     rate_list_Img = []
-    rate_dict_Img = {}
     rec_index = []
     rec_value = []
+
+    re_rate_list = []
+    re_rate_dict = {}
+    re_rate_list_Img = []
+    re_rec_index = []
+    re_rec_value = []
+
     rec_list_bk = []
     rec_list =[]
     rec_list_Img = []
@@ -229,18 +238,49 @@ for usr in range(1,len(user_dict)+1):
             tmp_j = toImage_dict[str(j)]
             rate = 0
             rate_Img = 0
+            rate_tmp = 0
             for l in user_x:
                 rate_list=Itemrate_dict[str(l)]
                 rate += rate_list[j-1]
             for k in userImg_x:
                 rate_list_Img = usrImg_dict[str(k)]
-                rate_Img += rate_list_Img[tmp_j[0]-1] * imageWeight[str(k)]
+                # rate_Img += rate_list_Img[tmp_j[0]-1]
+                rate_Img += rate_list_Img[tmp_j[0]-1] * imageWeight[tmp_j[0]-1]
+
             rate_dict[j] = rate + rate_Img
 
         #辞書を降順ソート
         for k, v in sorted(rate_dict.items(), key=lambda x:x[1] ,reverse = True):
             rec_index.append(k)
             rec_value.append(v)
+
+        # 推薦候補が5作品未満の場合
+        re_rec_list = []
+        for i in range(1,136):
+            re_rec_list.append(i)
+
+        if len(rec_list) < 5:
+            re_rec_list = list(set(re_rec_list)-src_set)
+            re_rec_list = list(set(re_rec_list)-set(rec_list))
+
+            for j in re_rec_list:
+                tmp_j = toImage_dict[str(j)]
+                rate = 0
+                rate_Img = 0
+                rate_tmp = 0
+                for l in user_x:
+                    re_rate_list=Itemrate_dict[str(l)]
+                    rate += re_rate_list[j-1]
+                for k in userImg_x:
+                    re_rate_list_Img = usrImg_dict[str(k)]
+                    # rate_Img += rate_list_Img[tmp_j[0]-1]
+                    rate_Img += re_rate_list_Img[tmp_j[0]-1] * imageWeight[tmp_j[0]-1]
+
+                re_rate_dict[j] = rate + rate_Img
+        for k, v in sorted(re_rate_dict.items(), key=lambda x:x[1] ,reverse = True):
+            rec_index.append(k)
+            rec_value.append(v)
+
 
         # #昇順ソート
         # rec_list.sort()
