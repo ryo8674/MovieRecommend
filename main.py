@@ -95,7 +95,9 @@ Moviefp = open(filenameMovie,"rU")
 readerMovie = csv.reader(Moviefp)
 MovieDB_dict={}
 for row in readerMovie:
-    MovieDB_dict[row[0]]=row[1].decode('utf-8')
+    # MovieDB_dict[row[0]]=row[1].decode('utf-8')
+    MovieDB_dict[row[0]]=row[1]
+
 
 #映画評価データ
 filenameEval = 'data/data_817/raw_data_817.csv'
