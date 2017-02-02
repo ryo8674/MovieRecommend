@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 # python 2.7.10
 
-
-#-------------------------------------------#
-# #Schedule
-# - data analysis
-# - ImageFilter -> ItemBased
-#     -> Image Similarity
-#-------------------------------------------#
-
-
 from __future__ import absolute_import
 from __future__ import unicode_literals
 from collections import defaultdict
