@@ -74,7 +74,7 @@ def recommend():
     #印象の類似度
     ImgItem_list = []
     ImgItem_dict = {}
-    filename = 'data/Itemrate_Img.csv'
+    filename = 'data/in_Img_rate.csv'
     fo.fileRead(filename,ImgItem_list,ImgItem_dict,num_type = float,flag = 3)
 
     #映画のタイトルを印象に変換
