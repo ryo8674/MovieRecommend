@@ -79,7 +79,7 @@ def itemrate():
     out_file2 = 'data/in_Img_rate817.csv'
 
     getRate(in_file1,out_file1,135)
-    getRate(in_file2,out_file2,176)
+    getRate(in_file2,out_file2,149)
 
 
 if __name__ == "__main__":

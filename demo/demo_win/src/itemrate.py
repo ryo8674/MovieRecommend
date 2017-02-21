@@ -76,7 +76,7 @@ def itemrate():
     in_file1 = 'data/in_data2.csv'
     in_file2 = 'data/in_data3.csv'
     out_file1 = 'data/in_Item_rate.csv'
-    out_file2 = 'data/in_Img_rate817.csv'
+    out_file2 = 'data/in_Img_rate.csv'
 
     getRate(in_file1,out_file1,135)
     getRate(in_file2,out_file2,176)

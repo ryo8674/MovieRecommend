@@ -13,12 +13,12 @@ def getInput(in_filename,out_filename,n,flag):
     out_list = [[0 for i in range(n)] for j in range(817)]
 
     fo.fileRead(in_filename,in_list,0,num_type = 0,flag = flag)
-    # print in_list
+
     if flag == 6 or flag == 7:
         k = 0
         if flag == 6:
             k = 1
-        # print k
+
         for i in range(817):
             for j in range(k,n):
                 if in_list[i][j] == '1' or in_list[i][j] == '2':
@@ -33,13 +33,12 @@ def getInput(in_filename,out_filename,n,flag):
                         in_list[i][j] = 0
 
         fo.fileWrite(out_filename,in_list,2)
+
     else:
         for i in range(len(in_list)):
             for j in in_list[i]:
                 out_list[i][j-1] = 1
         fo.fileWrite(out_filename,out_list,2)
-
-
 
 
 # if __name__ == "__main__":

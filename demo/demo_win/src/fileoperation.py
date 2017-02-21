@@ -16,12 +16,11 @@ def fileRead(filename,listname,dict_name,num_type,flag):
     for row in reader:
         if flag == 1:
             dict_name[row[0]]=row[1]
-            # dict_name.setdefault(row[0],[]).append(row[1])
-            # listname.append(row[2])
-            # listname = map(num_type,listname)
+
         elif flag == 6 or flag == 7 or flag == 8:
             if flag == 6:
                 listname[i] = row
+
             else:
                 listname[i] = row[1:]
                 if flag == 8:
@@ -29,8 +28,10 @@ def fileRead(filename,listname,dict_name,num_type,flag):
                         listname[i][int(listname[i.index("")])]=0
                     listname[i] = map(int,listname[i])
             i += 1
+
         elif flag == 5:
             listname.append(map(num_type,row))
+
         else:
             if flag == 2:
                 listname = row[1]

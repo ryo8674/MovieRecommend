@@ -6,13 +6,10 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 from collections import defaultdict
-# from math import sqrt
-# from time import sleep
 import fileoperation as fo
 import itemrate as ir
 import getInput as gi
 import titletoimg as tti
-# import csv
 
 #jaccard係数
 def jaccard(e1, e2):

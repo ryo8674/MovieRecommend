@@ -42,16 +42,16 @@ def getInput(in_filename,out_filename,n,flag):
 
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # in_filename = "data/raw_data_817.csv"
     # out_filename = "data/in_data_817.csv"
 
     # in_filename = "data/raw_data_817.csv"
     # out_filename = "data/in_data2.csv"
 
-    in_filename = "data/in_data_Img.csv"
-    out_filename = "data/in_data3.csv"
-
-    # getInput(in_filename,out_filename,135,1)
-    # getInput(in_filename,out_filename,135,2)
-    getInput(in_filename,out_filename,176,3)
+    # in_filename = "data/in_data_Img.csv"
+    # out_filename = "data/in_data3.csv"
+    #
+    # # getInput(in_filename,out_filename,135,1)
+    # # getInput(in_filename,out_filename,135,2)
+    # getInput(in_filename,out_filename,176,3)
